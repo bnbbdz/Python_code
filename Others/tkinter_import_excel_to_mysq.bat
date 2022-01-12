@@ -1,0 +1,1 @@
+"C:\ProgramData\Anaconda3\python.exe" "D:\Python + SQL + R\Git_code_backup\Tkinter\tkinter_import_excel_to_mysql.py"

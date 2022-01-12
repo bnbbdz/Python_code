@@ -1,0 +1,13 @@
+name: spec-api-directory
+
+dependencies:
+  - python=3.9
+  - pip
+  - pip:
+    - ploomber
+    - numpy
+    - pandas
+    - matplotlib
+    - scikit-learn
+    - seaborn
+    - pyarrow

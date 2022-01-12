@@ -1,0 +1,10 @@
+- source: ml_online.tasks.features.sepal_area
+  product: "{{product_root}}/products/features/sepal_area.parquet"
+  name: sepal-area
+
+- source: ml_online.tasks.features.petal_area
+  product: "{{product_root}}/products/features/petal_area.parquet"
+  name: petal-area
+
+- source: ml_online.tasks.features.features
+  product: "{{product_root}}/products/features/features.parquet"

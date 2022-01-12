@@ -1,0 +1,137 @@
+meta:
+  # Turn off upstream extraction, SQLUpload does not support this yet
+  extract_upstream: False
+
+  # Set defaults here so we don't have to add them on each task
+  product_default_class:
+    SQLUpload: SQLiteRelation
+    SQLScript: SQLiteRelation
+
+clients:
+  # All sql tasks connect to the same database
+  SQLUpload: db.get_client
+  SQLScript: db.get_client
+  SQLDump: db.get_client
+  # Products (tables) save metadata in the database itself
+  SQLiteRelation: db.get_client
+
+tasks:
+
+  # Get raw data: several XML files in a .7z compressed file
+
+  - source: preprocess/download.py
+    name: download
+    product:
+      nb: "{{path.products_root}}/download.ipynb"
+      zipped: "{{path.products_root}}/data.7z"
+      extracted: "{{path.products_root}}/extracted"
+  
+  # Convert XML to CSV
+  
+  - source: preprocess/convert2csv.py
+    name: convert2csv
+    upstream: download
+    product:
+      nb: "{{path.products_root}}/convert2csv.ipynb"
+      # generates a folder with data/{Users.csv, Comments.csv, Posts.csv}
+      data: "{{path.products_root}}/data"
+    # By default, scripts are executed in the folder that contains
+    # pipeline.yaml, preprocess/convert2csv.py imports preprocess/xml2csv.py
+    # but it won't find it if the script runs here (as opposed to running from
+    # preprocess/). local_execution changes the active directory to the folder
+    # that contains the script to execute
+    local_execution: true
+  
+  # Upload three CSVs to a database
+  - source: "{{path.products_root}}/data/Users.csv"
+    name: upload-users
+    class: SQLUpload
+    product: [users, table]
+    upstream: convert2csv
+    to_sql_kwargs:
+      if_exists: replace
+  
+  - source: "{{path.products_root}}/data/Comments.csv"
+    name: upload-comments
+    class: SQLUpload
+    product: [comments, table]
+    upstream: convert2csv
+    to_sql_kwargs:
+      if_exists: replace
+  
+  - source: "{{path.products_root}}/data/Posts.csv"
+    name: upload-posts
+    class: SQLUpload
+    product: [posts, table]
+    upstream: convert2csv
+    to_sql_kwargs:
+      if_exists: replace
+  
+  # Aggregate data
+
+  - source: sql/comments-by-post.sql
+    name: comments-by-post
+    product: [comments_by_post, table]
+    upstream: upload-comments
+  
+
+  - source: sql/upvotes-by-location.sql
+    name: upvotes-by-location
+    product: [upvotes_by_location, table]
+    upstream: upload-users
+  
+  - source: sql/posts-by-length.sql
+    name: posts-by-length
+    product: [posts_by_length, table]
+    upstream: upload-posts
+  
+
+  # Dump data
+  
+  - source: sql/select-comments-by-post.sql
+    name: comments-dump
+    class: SQLDump
+    product: "{{path.products_root}}/comments-dump.csv"
+    upstream: comments-by-post
+    # SQLDump chunks dumps in several files, since this isn't a big
+    # dataset, we just retrieve it in a single file
+    chunksize: null
+  
+  - source: sql/select-upvotes-by-location.sql
+    name: upvotes-dump
+    class: SQLDump
+    product: "{{path.products_root}}/upvotes-dump.csv"
+    upstream: upvotes-by-location
+    chunksize: null
+  
+  - source: sql/select-posts-by-length.sql
+    name: posts-dump
+    class: SQLDump
+    product: "{{path.products_root}}/posts-dump.csv"
+    upstream: posts-by-length
+    chunksize: null
+  
+
+  # Plot
+  
+  - source: plot/comments.py
+    name: comments-plot
+    product:
+      # The executed notebook will be automatically converted from ipynb to html
+      nb: "{{path.products_root}}/comments-plot.html"
+    upstream: comments-dump
+  
+  # Note that this is an R script! Having R and Python in the same pipeline
+  # isn't ideal, as it makes projects more complex. This is just for
+  # illustrative purposes
+  - source: plot/upvotes.R
+    name: plot-upvotes
+    product:
+      nb: "{{path.products_root}}/plot-upvotes.html"
+    upstream: upvotes-dump
+
+  - source: plot/posts.py
+    name: posts-plot
+    product:
+      nb: "{{path.products_root}}/posts-plot.html"
+    upstream: posts-dump

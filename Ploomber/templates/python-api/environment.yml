@@ -1,0 +1,11 @@
+name: python-api
+
+dependencies:
+  - python=3.9
+  - pip
+  - pip:
+    - numpy
+    - pandas
+    - seaborn
+    - ploomber
+
