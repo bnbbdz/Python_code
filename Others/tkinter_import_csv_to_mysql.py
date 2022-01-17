@@ -82,7 +82,7 @@ def import_excel_file ():
     global x1
     x1 = entry1.get()
     #Upload excel file and load into oracle
-    df = pd.read_excel(filename) 
+    df = pd.read_csv(filename) 
 
     old_columns = df.columns.tolist() 
     new_columns = [convert(x) for x in old_columns]
