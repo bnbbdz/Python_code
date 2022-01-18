@@ -1,10 +1,10 @@
---Loc ra cac ORDERNUMBER phat sinh tu 01/07/2003 - 15/07/2003 & sap xep theo thu tu ngay phat sinh
+--Loc ra cac ORDERNUMBER phat sinh tu 01/07/2003 - 15/07/2003 & sap xep theo thu tu ngay phat sinh ORDERDATE
 select * 
 from dbo.data_sample a
 where ORDERDATE between '01-jul-2003' and '15-jul-2003'
 order by ORDERDATE;
 
---Thong ke so luong ORDERNUMBER theo dinh dang thangnam (YYYYMM)
+--Thong ke so luong ORDERNUMBER theo thang, dinh dang thangnam (YYYYMM)
 select  CONVERT(varchar(6), ORDERDATE, 112) month_report
 		,count(distinct ORDERNUMBER) so_luong_order
 from dbo.data_sample a
