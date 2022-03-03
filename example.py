@@ -414,3 +414,5 @@ select * from table sort by id, name
 # python
 table.sort_values(by=[‘id’, ‘name’], inplace=True, ascending = False)
 
+https://towardsdatascience.com/8-popular-sql-window-functions-replicated-in-python-e17e6b34d5d7
+https://towardsdatascience.com/pandas-equivalent-of-10-useful-sql-queries-f79428e60bd9
