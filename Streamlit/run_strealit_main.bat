@@ -1,0 +1,1 @@
+streamlit run "D:/03. Learning/01. Coder/00. Git_code_backup/Streamlit/Demo-streamlit/main.py" --server.headless=True
