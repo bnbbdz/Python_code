@@ -1,0 +1,20 @@
+{
+  "compilerOptions": {
+    "target": "es6",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "declaration": false,
+    "strict": true,
+    "sourceMap": true,
+    "lib": ["es6", "dom"]
+  },
+  "types": [
+    "webpack-env"
+  ],
+  "files": [
+    "src/index.ts",
+    "src/widget.ts",
+    "src/extension.ts",
+    "src/labplugin.ts"      
+  ]
+}

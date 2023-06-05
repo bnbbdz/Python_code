@@ -1,0 +1,57 @@
+{
+  "name": "jupyter-vega",
+  "version": "3.6.0",
+  "description": "IPython/Jupyter notebook module for [Vega](https://vega.github.io/vega), and [Vega-Lite](https://vega.github.io/vega-lite).",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vega/ipyvega.git"
+  },
+  "author": "",
+  "license": "BSD-3-Clause",
+  "bugs": {
+    "url": "https://github.com/vega/ipyvega/issues"
+  },
+  "homepage": "https://github.com/vega/ipyvega#readme",
+  "scripts": {
+    "format": "prettier --write 'src/*.ts'",
+    "lint": "prettier --check 'src/*.ts'",
+    "build": "webpack --mode production",
+    "watch": "webpack --mode development --watch"
+  },
+    "dependencies": {
+    "jupyter-tablewidgets": "^0.3.0",
+    "vega": "5.22.1",
+    "vega-lite": "4.17.0",
+    "vega-embed": "^6.21.0",
+    "@jupyter-widgets/base": "6.0.2",
+    "@types/webpack-env": "*"
+  },
+  "devDependencies": {
+    "@types/webpack-env": "*",
+    "@types/ndarray": "^1.0.11",
+    "filemanager-webpack-plugin": "^8.0.0",
+    "prettier": "^2.5.1",
+    "ts-loader": "^9.2.6",
+    "typescript": "^4.5.5",
+    "webpack": "^5.68.0",
+    "webpack-cli": "^4.9.2"
+  },
+  "files": [
+    "dist",
+    "src",
+    "package.json",
+    "tsconfig.json",
+    "webpack.config.js",
+    "yarn.lock",
+    "vega/static/"
+  ],
+  "jupyterlab": {
+      "extension": "vega/static/labplugin",
+      "sharedPackages": {
+      "@jupyter-widgets/base": {
+        "bundled": false,
+        "singleton": true
+      }
+    }
+  }
+}

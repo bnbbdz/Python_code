@@ -6,15 +6,15 @@ from PIL import Image, ImageTk
 
 root = tk.Tk()
 root.title('CAPTAIN TEEMO ON DUTY')
-root.iconbitmap('icon.ico')
+# root.iconbitmap('icon.ico')
 root.geometry('1366x768')
 canvas1 = tk.Canvas(root, width = 1366, height = 768)
 canvas1.pack()
 
-load_img = Image.open('bg6.jpg')
-load_img_2 = ImageTk.PhotoImage(load_img)
-img = tk.Label(root, image = load_img_2)
-img.place(x=0,y=0)
+# load_img = Image.open('bg6.jpg')
+# load_img_2 = ImageTk.PhotoImage(load_img)
+# img = tk.Label(root, image = load_img_2)
+# img.place(x=0,y=0)
 
 lable1 = tk.Label(root, text = 'Copy link nhanh cái tay lên',bg = '#020820')
 lable1.config(font=("MS Sans Serif",15,"bold"),fg='#37A3BF')
